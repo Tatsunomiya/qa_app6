@@ -24,8 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroud="@drawable/custom_button"
         android:text="変更"
+        android:background="@drawable/custom_button"
+
         android:textColor="@color/colorButtonText"  />
 
     <Button
@@ -33,8 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroud="@drawable/custom_button"
         android:text="ログアウト"
+        android:background="@drawable/custom_button"
+
         android:textColor="@color/colorButtonText" />
 
 

@@ -2,9 +2,9 @@ package tatsunomiya.com.qaaapp2
 
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
