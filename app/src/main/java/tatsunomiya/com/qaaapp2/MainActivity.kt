@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mAdapter: QuestionsListAdapter
 
 
+
     private var mGenreRef: DatabaseReference? = null
 
     private val mEventListener = object : ChildEventListener {
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val name = map["name"] ?: ""
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
+            val favoritSwitcher= map["favorite"] ?: ""
 
             val bytes = if (imageString.isNotEmpty()) {
                 Base64.decode(imageString, Base64.DEFAULT)
@@ -77,7 +79,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dataSnapshot.key ?: "",
                 mGenre,
                 bytes,
-                answerArrayList
+                answerArrayList,
+                favoritSwitcher
             )
 
             mQuestionArrayList.add(question)
@@ -154,18 +157,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
+            setContentView(R.layout.activity_mainl)
+            // ログインしていない場合は何もしない
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout2)
+            val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
+            drawer.addDrawerListener(toggle)
+            toggle.syncState()
+
+            val navigationView = findViewById<NavigationView>(R.id.nav_view)
+            navigationView.setNavigationItemSelectedListener(this)
 
 
+        } else {
+            // ナビゲーションドロワーの設定
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
+            drawer.addDrawerListener(toggle)
+            toggle.syncState()
+
+            val navigationView = findViewById<NavigationView>(R.id.nav_view)
+            navigationView.setNavigationItemSelectedListener(this)
+
+        }
 
 
-        // ナビゲーションドロワーの設定
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
-
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
 
         // Firebase
         mDatabaseReference = FirebaseDatabase.getInstance().reference
@@ -242,9 +259,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         }
+        val user = FirebaseAuth.getInstance().currentUser
 
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        drawer.closeDrawer(GravityCompat.START)
+        if (user == null) {
+
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout2)
+            drawer.closeDrawer(GravityCompat.START)
+
+        }else{
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+            drawer.closeDrawer(GravityCompat.START)
+
+        }
 
         // --- ここから ---
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す

@@ -2,6 +2,7 @@ package tatsunomiya.com.qaaapp2
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -9,20 +10,17 @@ import kotlinx.android.synthetic.main.activity_question_detail.*
 
 
 class QuestionDetailActivity: AppCompatActivity() {
-    var favoriteSwitch : String = "0"
+    var favoriteSwitch: String = "0"
 
-    private var favoriteGenre: String =  "5"
+    private var favoriteGenre: String = "5"
 
-
-
-
+    private var mGenre = 0
 
 
     private lateinit var mQuestion: Question
     private lateinit var mAdapter: QuestionDetailListAdapter
     private lateinit var mAnswerRef: DatabaseReference
-
-
+    private lateinit var mQuestionArrayList: ArrayList<Question>
 
 
     private val mEventListener = object : ChildEventListener {
@@ -72,21 +70,85 @@ class QuestionDetailActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_detail)
 
+        val mEventListener = object : ChildEventListener {
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+
+                val map = dataSnapshot.value as Map<String, String>
+                val title = map["title"] ?: ""
+                val body = map["body"] ?: ""
+                val name = map["name"] ?: ""
+                val uid = map["uid"] ?: ""
+                val imageString = map["image"] ?: ""
+                val favoriteSwitcher = map["favorite"] ?: ""
+
+                val bytes = if (imageString.isNotEmpty()) {
+                    Base64.decode(imageString, Base64.DEFAULT)
+
+
+                } else {
+                    byteArrayOf()
+                }
+
+                val answerArrayList = ArrayList<Answer>()
+                val answerMap = map["answers"] as Map<String, String>?
+                if (answerMap != null) {
+                    for (key in answerMap.keys) {
+                        val temp = answerMap[key] as Map<String, String>
+                        val answerBody = temp["body"] ?: ""
+                        val answerName = temp["name"] ?: ""
+                        val answerUid = temp["uid"] ?: ""
+                        val answer = Answer(answerBody, answerName, answerUid, key)
+
+                        answerArrayList.add(answer)
+
+                    }
+                }
+
+                val question = Question(
+                    title,
+                    body,
+                    name,
+                    uid,
+                    dataSnapshot.key ?: "",
+                    mGenre,
+                    bytes,
+                    answerArrayList,
+                    favoriteSwitcher
+                )
+
+
+
+
+            }
 
 
 
 
 
-
-
-
-
-
-
+        }
 
 
         val extras = intent.extras
         mQuestion = extras.get("question") as Question
+
+
+
 
 
 
@@ -96,6 +158,24 @@ class QuestionDetailActivity: AppCompatActivity() {
         mAdapter = QuestionDetailListAdapter(this, mQuestion)
         listView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
+
+         if(mQuestion.favoriteSwitcher == "1") {
+             button1.setImageResource(R.drawable.favorite2)
+
+
+         } else if(mQuestion.favoriteSwitcher == "0") {
+             button1.setImageResource(R.drawable.favorite1)
+
+
+
+
+
+         }
+
+
+
+
+
 
         fab.setOnClickListener {
             val user = FirebaseAuth.getInstance().currentUser
@@ -107,14 +187,15 @@ class QuestionDetailActivity: AppCompatActivity() {
                 startActivity(intent)
             }
 
-        }
+
+            }
 
 
 
 
-        val dataBaseReference = FirebaseDatabase.getInstance().reference
-        mAnswerRef = dataBaseReference.child(ContentsPATH).child(mQuestion.genre.toString()).child(AnswersPATH)
-        mAnswerRef.addChildEventListener(mEventListener)
+//        val dataBaseReference = FirebaseDatabase.getInstance().reference
+//        mAnswerRef = dataBaseReference.child(ContentsPATH).child(mQuestion.genre.toString()).child(AnswersPATH)
+//        mAnswerRef.addChildEventListener(mEventListener)
 
 
         button1.setOnClickListener() {
@@ -140,9 +221,16 @@ class QuestionDetailActivity: AppCompatActivity() {
                     // 変更した表示名をFirebaseに保存する
 //                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
                     val data = HashMap<String, Any>()
+                    val data2 = HashMap<String,Any>()
+
                     data["favorite"] = favoriteSwitch
+                    data2["title"] =  mQuestion.title
+                    data2["body"] = mQuestion.body
+                    data2["name"] = mQuestion.name
                     genreRef.updateChildren(data)
                     favoriteRef.updateChildren(data)
+                    favoriteRef.updateChildren(data2)
+
 
                 }
 
@@ -152,7 +240,6 @@ class QuestionDetailActivity: AppCompatActivity() {
 
                 FirebaseDatabase.getInstance().reference
 
-                FirebaseDatabase.getInstance().reference
                 val user = FirebaseAuth.getInstance().currentUser
 
                 val dataBaseReference = FirebaseDatabase.getInstance().reference
@@ -185,7 +272,7 @@ class QuestionDetailActivity: AppCompatActivity() {
 }
 
 
-    
+
 
 }
 
