@@ -2,7 +2,6 @@ package tatsunomiya.com.qaaapp2
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -10,6 +9,10 @@ import kotlinx.android.synthetic.main.activity_question_detail.*
 
 
 class QuestionDetailActivity: AppCompatActivity() {
+    var favoriteSwitch : String = "0"
+
+    private var favoriteGenre: String =  "5"
+
 
 
 
@@ -70,19 +73,12 @@ class QuestionDetailActivity: AppCompatActivity() {
         setContentView(R.layout.activity_question_detail)
 
 
-//        val favoriteButton = findViewById<View>(R.id.button1) as ImageButton
-//        favoriteButton.setImageResource(R.drawable.favorite1)
-//
-//        favoriteButton.setOnClickListener{v  ->
-//            if(favoriteSwitch == 0) {
-//                favoriteSwitch = 1
-//                saveFavorite(favoriteSwitch)
-//
-//                favoriteButton.setImageResource(R.drawable.favorite2)
-//
-//
-//
-//            }
+
+
+
+
+
+
 
 
 
@@ -92,7 +88,8 @@ class QuestionDetailActivity: AppCompatActivity() {
         val extras = intent.extras
         mQuestion = extras.get("question") as Question
 
-//        val favorite : Int? = 0
+
+
 
         title = mQuestion.title
 
@@ -120,17 +117,75 @@ class QuestionDetailActivity: AppCompatActivity() {
         mAnswerRef.addChildEventListener(mEventListener)
 
 
+        button1.setOnClickListener() {
+            if (favoriteSwitch == "0") {
+                favoriteSwitch = "1"
+
+
+
+                button1.setImageResource(R.drawable.favorite2)
+                FirebaseDatabase.getInstance().reference
+                val user = FirebaseAuth.getInstance().currentUser
+
+                val dataBaseReference = FirebaseDatabase.getInstance().reference
+                val genreRef = dataBaseReference.child(ContentsPATH).child(mQuestion.genre
+                    .toString()).child(mQuestion.questionUid)
+
+                val favoriteRef = dataBaseReference.child(ContentsPATH).child(favoriteGenre).child(mQuestion.questionUid)
+
+                if (user == null) {
+                    // ログインしていない場合は何もしない
+
+                } else {
+                    // 変更した表示名をFirebaseに保存する
+//                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
+                    val data = HashMap<String, Any>()
+                    data["favorite"] = favoriteSwitch
+                    genreRef.updateChildren(data)
+                    favoriteRef.updateChildren(data)
+
+                }
+
+            } else {
+                button1.setImageResource(R.drawable.favorite1)
+                favoriteSwitch = "0"
+
+                FirebaseDatabase.getInstance().reference
+
+                FirebaseDatabase.getInstance().reference
+                val user = FirebaseAuth.getInstance().currentUser
+
+                val dataBaseReference = FirebaseDatabase.getInstance().reference
+                val genreRef = dataBaseReference.child(ContentsPATH).child(mQuestion.genre
+                    .toString()).child(mQuestion.questionUid)
+                val favoriteRef = dataBaseReference.child(ContentsPATH).child(favoriteGenre).child(mQuestion.questionUid)
+
+
+
+                if (user == null) {
+                    // ログインしていない場合は何もしない
+                } else {
+                    // 変更した表示名をFirebaseに保存する
+//                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
+                    val data = HashMap<String, Any>()
+                    data["favorite"] = favoriteSwitch
+                    genreRef.updateChildren(data)
+                    favoriteRef.removeValue()
+
+
+                }
+
+            }
+
+        }
+
+
 
 
 }
 
-    private fun saveFavorite(favorite: Int) {
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
-        val editor = sp.edit()
-        editor.putInt(favoriteKEY, favorite)
-        editor.commit()
 
-    }
+    
 
 }
 

@@ -7,14 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.database.*
 
 
 //class QuestionsListAdapter(context: Context) : BaseAdapter() {
@@ -136,60 +130,60 @@ class QuestionDetailListAdapter(context: Context, private val  mQustion: Questio
             }
 
 
-        val favoriteButton = convertView.findViewById<View>(R.id.button1) as ImageButton
-        favoriteButton.setImageResource(R.drawable.favorite1)
+//        val favoriteButton = convertView.findViewById<View>(R.id.button1) as ImageButton
+//        favoriteButton.setImageResource(R.drawable.favorite1)
+//
+//        favoriteButton.setOnClickListener { v ->
+//            if (favoriteSwitch == "0") {
+//                favoriteSwitch = "1"
+//
+//                favoriteButton.setImageResource(R.drawable.favorite2)
+//                FirebaseDatabase.getInstance().reference
+//                val user = FirebaseAuth.getInstance().currentUser
+//
+//                val dataBaseReference = FirebaseDatabase.getInstance().reference
+////                val genreRef = dataBaseReference.child(ContentsPATH).child(mGenre.toString()).child()
+//
+//                if (user == null) {
+//                    // ログインしていない場合は何もしない
+//                    Snackbar.make(v, "ログインしていません", Snackbar.LENGTH_LONG).show()
+//
+//                }else{
+//                    // 変更した表示名をFirebaseに保存する
+////                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
+//                    val data = HashMap<String, String>()
+//                    data["favorite"] = favoriteSwitch
+////                    genreRef.push().setValue(data)
+//
+//                }
+//
+//            } else {
+//                favoriteButton.setImageResource(R.drawable.favorite1)
+//                favoriteSwitch = "0"
+//
+//                FirebaseDatabase.getInstance().reference
+//
+//                FirebaseDatabase.getInstance().reference
+//                val user = FirebaseAuth.getInstance().currentUser
+//
+//                val dataBaseReference = FirebaseDatabase.getInstance().reference
+//                val genreRef = dataBaseReference.child(ContentsPATH).child(mGenre.toString())
+//
+//                if (user == null) {
+//                    // ログインしていない場合は何もしない
+//                    Snackbar.make(v, "ログインしていません", Snackbar.LENGTH_LONG).show()
+//                } else {
+//                    // 変更した表示名をFirebaseに保存する
+////                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
+//                    val data = HashMap<String, String>()
+//                    data["favorite"] = favoriteSwitch
+//                    genreRef.push().setValue(data)
+//
+//
+//                }
 
-        favoriteButton.setOnClickListener { v ->
-            if (favoriteSwitch == "0") {
-                favoriteSwitch = "1"
-
-                favoriteButton.setImageResource(R.drawable.favorite2)
-                FirebaseDatabase.getInstance().reference
-                val user = FirebaseAuth.getInstance().currentUser
-
-                val dataBaseReference = FirebaseDatabase.getInstance().reference
-                val genreRef = dataBaseReference.child(ContentsPATH).child(mGenre.toString()).child()
-
-                if (user == null) {
-                    // ログインしていない場合は何もしない
-                    Snackbar.make(v, "ログインしていません", Snackbar.LENGTH_LONG).show()
-
-                }else{
-                    // 変更した表示名をFirebaseに保存する
-//                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
-                    val data = HashMap<String, String>()
-                    data["favorite"] = favoriteSwitch
-                    genreRef.push().setValue(data)
-
-                }
-
-            } else {
-                favoriteButton.setImageResource(R.drawable.favorite1)
-                favoriteSwitch = "0"
-
-                FirebaseDatabase.getInstance().reference
-
-                FirebaseDatabase.getInstance().reference
-                val user = FirebaseAuth.getInstance().currentUser
-
-                val dataBaseReference = FirebaseDatabase.getInstance().reference
-                val genreRef = dataBaseReference.child(ContentsPATH).child(mGenre.toString())
-
-                if (user == null) {
-                    // ログインしていない場合は何もしない
-                    Snackbar.make(v, "ログインしていません", Snackbar.LENGTH_LONG).show()
-                } else {
-                    // 変更した表示名をFirebaseに保存する
-//                    val userRef = mDataBaseReference.child(UsersPATH).child(user!!.uid)
-                    val data = HashMap<String, String>()
-                    data["favorite"] = favoriteSwitch
-                    genreRef.push().setValue(data)
-
-
-                }
-
-            }
-        }
+//            }
+//        }
 
         } else {
             if (convertView == null) {

@@ -17,7 +17,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+
+
+
+
+
+
 
     private lateinit var mToolbar: Toolbar
     private var mGenre = 0
@@ -143,6 +149,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
+
+
+
+
+
+
+
+
+
         // ナビゲーションドロワーの設定
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
@@ -221,6 +236,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else if (id == R.id.nav_compter) {
             mToolbar.title = "コンピューター"
             mGenre = 4
+        }else if (id == R.id.nav_favorite) {
+            mToolbar.title = "お気に入り"
+            mGenre = 5
+
+
         }
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

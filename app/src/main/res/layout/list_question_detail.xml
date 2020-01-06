@@ -38,13 +38,13 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"        android:layout_alignParentRight="true" />
 
-    <ImageButton
-        android:id="@+id/button1"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/favorite" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/button1"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:background="@drawable/favorite" />-->
 
 
 
