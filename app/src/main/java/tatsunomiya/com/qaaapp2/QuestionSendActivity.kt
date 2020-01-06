@@ -296,6 +296,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
             val dataBaseReference = FirebaseDatabase.getInstance().reference
             val genreRef = dataBaseReference.child(ContentsPATH).child(mGenre.toString())
 
+
             val data = HashMap<String, String>()
 
             // UID
@@ -324,6 +325,7 @@ class QuestionSendActivity : AppCompatActivity(), View.OnClickListener, Database
             data["title"] = title
             data["body"] = body
             data["name"] = name
+            data["favorite"] = "0"
 
             // 添付画像を取得する
             val drawable = imageView.drawable as? BitmapDrawable

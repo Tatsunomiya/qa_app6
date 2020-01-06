@@ -122,47 +122,74 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->
-            if(mGenre == 0) {
-                Snackbar.make(view,"ジャンルを選択してください", Snackbar.LENGTH_LONG).show()
-            }else {
+            // ジャンルを選択していない場合（mGenre == 0）はエラーを表示するだけ
+            if (mGenre == 0) {
+                Snackbar.make(view, "ジャンルを選択して下さい", Snackbar.LENGTH_LONG).show()
+            } else {
 
             }
-
+            // ログイン済みのユーザーを取得する
             val user = FirebaseAuth.getInstance().currentUser
 
-
-            if( user == null) {
+            if (user == null) {
+                // ログインしていなければログイン画面に遷移させる
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 startActivity(intent)
-            }else {
-                val intent = Intent(applicationContext,QuestionSendActivity::class.java)
-                intent.putExtra("genre",mGenre)
-
-                    startActivity(intent)
+            } else {
+                // ジャンルを渡して質問作成画面を起動する
+                val intent = Intent(applicationContext, QuestionSendActivity::class.java)
+                intent.putExtra("genre", mGenre)
+                startActivity(intent)
             }
-
         }
 
+        // ナビゲーションドロワーの設定
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(this,drawer,mToolbar,R.string.app_name,R.string.app_name)
+        val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-
         navigationView.setNavigationItemSelectedListener(this)
 
+        // Firebase
         mDatabaseReference = FirebaseDatabase.getInstance().reference
 
+        // ListViewの準備
         mListView = findViewById(R.id.listView)
         mAdapter = QuestionsListAdapter(this)
-        mQuestionArrayList =  ArrayList<Question>()
+        mQuestionArrayList = ArrayList<Question>()
         mAdapter.notifyDataSetChanged()
+
+        mListView.setOnItemClickListener { parent, view, position, id ->
+            // Questionのインスタンスを渡して質問詳細画面を起動する
+            val intent = Intent(applicationContext, QuestionDetailActivity::class.java)
+            intent.putExtra("question", mQuestionArrayList[position])
+            startActivity(intent)
+        }
+
+
+        mListView.setOnItemClickListener { parent, view, position, id ->
+            // Questionのインスタンスを渡して質問詳細画面を起動する
+            val intent = Intent(applicationContext, QuestionDetailActivity::class.java)
+            intent.putExtra("question", mQuestionArrayList[position])
+            startActivity(intent)
+        }
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+
+        // 1:趣味を既定の選択とする
+        if(mGenre == 0) {
+            onNavigationItemSelected(navigationView.menu.getItem(0))
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
@@ -175,56 +202,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
             return true
         }
-          return super.onOptionsItemSelected(item)
+
+        return super.onOptionsItemSelected(item)
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
 
-
-    override fun onNavigationItemSelected(item: MenuItem):Boolean {
-        val id  = item.itemId
-
-        if(id == R.id.nav_hobby) {
-            mToolbar.title ="趣味"
+        if (id == R.id.nav_hobby) {
+            mToolbar.title = "趣味"
             mGenre = 1
-        }else if(id == R.id.nav_life) {
-            mToolbar.title ="生活"
+        } else if (id == R.id.nav_life) {
+            mToolbar.title = "生活"
             mGenre = 2
-        }else if(id == R.id.nav_health) {
-            mToolbar.title ="健康"
+        } else if (id == R.id.nav_health) {
+            mToolbar.title = "健康"
             mGenre = 3
-        }else if(id == R.id.nav_compter){
-            mToolbar.title ="コンピューター"
+        } else if (id == R.id.nav_compter) {
+            mToolbar.title = "コンピューター"
             mGenre = 4
         }
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
 
-
+        // --- ここから ---
+        // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
         mQuestionArrayList.clear()
         mAdapter.setQuestionArrayList(mQuestionArrayList)
         mListView.adapter = mAdapter
 
-        if(mGenreRef != null) {
+        // 選択したジャンルにリスナーを登録する
+        if (mGenreRef != null) {
             mGenreRef!!.removeEventListener(mEventListener)
-
         }
-
         mGenreRef = mDatabaseReference.child(ContentsPATH).child(mGenre.toString())
         mGenreRef!!.addChildEventListener(mEventListener)
+        // --- ここまで追加する ---
 
         return true
-
     }
-
-    override fun onResume() {
-        super.onResume()
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-
-
-        if(mGenre == 0) {
-            onNavigationItemSelected(navigationView.menu.getItem(0))
-        }
-    }
-
 }
