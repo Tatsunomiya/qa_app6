@@ -17,12 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
-
-
-
-
-
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     private lateinit var mToolbar: Toolbar
@@ -35,7 +30,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mAdapter: QuestionsListAdapter
 
 
-
     private var mGenreRef: DatabaseReference? = null
 
     private val mEventListener = object : ChildEventListener {
@@ -46,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val name = map["name"] ?: ""
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
-            val favoritSwitcher= map["favorite"] ?: ""
+            val favoritSwitcher = map["favorite"] ?: ""
 
             val bytes = if (imageString.isNotEmpty()) {
                 Base64.decode(imageString, Base64.DEFAULT)
@@ -110,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-            override fun onChildRemoved(p0: DataSnapshot) {
+        override fun onChildRemoved(p0: DataSnapshot) {
         }
 
         override fun onChildMoved(p0: DataSnapshot, p1: String?) {
@@ -128,6 +122,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         mToolbar = findViewById(R.id.toolbar)
         setSupportActionBar(mToolbar)
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if(user == null) {
+            val navigationDrawer: NavigationView  = findViewById(R.id.drawer_layout);
+            val tmpm: Menu = navigationDrawer.getMenu
+            tmpm.findItem(R.id.nav_favorite)
+            tmpm.findItem(R.id.nav_favorite).setVisible(true)
+
+        }else{
+            TODO()
+        }
+
+
+
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener { view ->
@@ -153,35 +162,68 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
-
-
-
-
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
-            setContentView(R.layout.activity_mainl)
-            // ログインしていない場合は何もしない
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout2)
-            val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
-            drawer.addDrawerListener(toggle)
-            toggle.syncState()
-
-            val navigationView = findViewById<NavigationView>(R.id.nav_view)
-            navigationView.setNavigationItemSelectedListener(this)
-
-
-        } else {
-            // ナビゲーションドロワーの設定
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-            val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
-            drawer.addDrawerListener(toggle)
-            toggle.syncState()
-
-            val navigationView = findViewById<NavigationView>(R.id.nav_view)
-            navigationView.setNavigationItemSelectedListener(this)
-
-        }
-
+//
+//        val user = FirebaseAuth.getInstance().currentUser
+//        if (user == null) {
+//            setContentView(R.layout.activity_mainl)
+//
+//            mToolbar = findViewById(R.id.toolbar)
+//            setSupportActionBar(mToolbar)
+//
+//
+//                // ログインしていない場合は何もしない
+                val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+                val toggle = ActionBarDrawerToggle(
+                    this,
+                    drawer,
+                    mToolbar,
+                    R.string.app_name,
+                    R.string.app_name
+                )
+                drawer.addDrawerListener(toggle)
+                toggle.syncState()
+//
+//                val navigationView = findViewById<NavigationView>(R.id.nav_view)
+//                navigationView.setNavigationItemSelectedListener(this)
+//
+//            val fab = findViewById<FloatingActionButton>(R.id.fab)
+//            fab.setOnClickListener { view ->
+//                // ジャンルを選択していない場合（mGenre == 0）はエラーを表示するだけ
+//                if (mGenre == 0) {
+//                    Snackbar.make(view, "ジャンルを選択して下さい", Snackbar.LENGTH_LONG).show()
+//                } else {
+//
+//                }
+//
+//            }
+//
+//
+//        } else {
+//            // ナビゲーションドロワーの設定
+//            setContentView(R.layout.activity_main)
+//
+//            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+//            val toggle = ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name)
+//            drawer.addDrawerListener(toggle)
+//            toggle.syncState()
+//
+//            mToolbar = findViewById(R.id.toolbar)
+//            setSupportActionBar(mToolbar)
+//
+//            val fab = findViewById<FloatingActionButton>(R.id.fab)
+//            fab.setOnClickListener { view ->
+//                // ジャンルを選択していない場合（mGenre == 0）はエラーを表示するだけ
+//                if (mGenre == 0) {
+//                    Snackbar.make(view, "ジャンルを選択して下さい", Snackbar.LENGTH_LONG).show()
+//                } else {
+//
+//                }
+//
+//
+                val navigationView = findViewById<NavigationView>(R.id.nav_view)
+                navigationView.setNavigationItemSelectedListener(this)
+//            }
+//        }
 
 
         // Firebase
@@ -215,7 +257,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
 
         // 1:趣味を既定の選択とする
-        if(mGenre == 0) {
+        if (mGenre == 0) {
             onNavigationItemSelected(navigationView.menu.getItem(0))
         }
     }
@@ -253,24 +295,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else if (id == R.id.nav_compter) {
             mToolbar.title = "コンピューター"
             mGenre = 4
-        }else if (id == R.id.nav_favorite) {
+        } else if (id == R.id.nav_favorite) {
             mToolbar.title = "お気に入り"
             mGenre = 5
 
 
         }
-        val user = FirebaseAuth.getInstance().currentUser
+//        val user = FirebaseAuth.getInstance().currentUser
+//
+//        if (user == null) {
+//
+//            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout2)
+//            drawer.closeDrawer(GravityCompat.START)
+//
+//        }else{
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        drawer.closeDrawer(GravityCompat.START)
 
-        if (user == null) {
 
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout2)
-            drawer.closeDrawer(GravityCompat.START)
-
-        }else{
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-            drawer.closeDrawer(GravityCompat.START)
-
-        }
 
         // --- ここから ---
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
