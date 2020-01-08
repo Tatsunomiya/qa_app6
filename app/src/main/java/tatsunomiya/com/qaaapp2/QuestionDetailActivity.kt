@@ -111,6 +111,17 @@ class QuestionDetailActivity: AppCompatActivity() {
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+//
+//                if(p0.key == "favorite") {
+//
+//
+//                    if (p0.value == "0") {
+//                        button1.setImageResource(R.drawable.favorite1)
+//                    } else {
+//                        button1.setImageResource(R.drawable.favorite2)
+//                    }
+//
+//                }
 
 //                val map = p0.value as Map<String, String>
 //                val title = map["title"] ?: ""

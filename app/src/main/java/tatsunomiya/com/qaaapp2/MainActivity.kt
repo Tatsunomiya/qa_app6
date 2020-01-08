@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var mGenerX = 0
     private lateinit var mToolbar: Toolbar
-    private var mGenre =0
+    private var mGenre = 0
 
 
     private lateinit var mDatabaseReference: DatabaseReference
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val name = map["name"] ?: ""
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
+            val favoriteSwitch = map["favorite"] ?: ""
 
             val bytes = if (imageString.isNotEmpty()) {
                 Base64.decode(imageString, Base64.DEFAULT)
@@ -79,6 +80,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             mQuestionArrayList.add(question)
             mAdapter.notifyDataSetChanged()
+
+
         }
 
         override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
@@ -118,8 +121,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -128,16 +129,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val user = FirebaseAuth.getInstance().currentUser
 
-        if(user == null) {
-            val navigationDrawer: NavigationView  = findViewById(R.id.nav_view);
+
+        if (user == null) {
+            val navigationDrawer: NavigationView = findViewById(R.id.nav_view);
             val tmpm: Menu = navigationDrawer.getMenu()
             tmpm.findItem(R.id.nav_favorite)
             tmpm.findItem(R.id.nav_favorite).setVisible(false)
 
-        }else{
+        } else {
+            val navigationDrawer: NavigationView = findViewById(R.id.nav_view);
+            val tmpm: Menu = navigationDrawer.getMenu()
+            tmpm.findItem(R.id.nav_favorite)
+            tmpm.findItem(R.id.nav_favorite).setVisible(true)
+
         }
-
-
 
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
@@ -174,16 +179,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 //
 //                // ログインしていない場合は何もしない
-                val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-                val toggle = ActionBarDrawerToggle(
-                    this,
-                    drawer,
-                    mToolbar,
-                    R.string.app_name,
-                    R.string.app_name
-                )
-                drawer.addDrawerListener(toggle)
-                toggle.syncState()
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer,
+            mToolbar,
+            R.string.app_name,
+            R.string.app_name
+        )
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
 //
 //                val navigationView = findViewById<NavigationView>(R.id.nav_view)
 //                navigationView.setNavigationItemSelectedListener(this)
@@ -222,8 +227,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                }
 //
 //
-                val navigationView = findViewById<NavigationView>(R.id.nav_view)
-                navigationView.setNavigationItemSelectedListener(this)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
 //            }
 //        }
 
@@ -258,9 +263,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onResume()
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
 
+
         // 1:趣味を既定の選択とする
         if (mGenre == 0) {
             onNavigationItemSelected(navigationView.menu.getItem(0))
+        }
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user == null) {
+            val navigationDrawer: NavigationView = findViewById(R.id.nav_view);
+            val tmpm: Menu = navigationDrawer.getMenu()
+            tmpm.findItem(R.id.nav_favorite)
+            tmpm.findItem(R.id.nav_favorite).setVisible(false)
+
+        } else {
+            val navigationDrawer: NavigationView = findViewById(R.id.nav_view);
+            val tmpm: Menu = navigationDrawer.getMenu()
+            tmpm.findItem(R.id.nav_favorite)
+            tmpm.findItem(R.id.nav_favorite).setVisible(true)
+
+
         }
     }
 
@@ -287,7 +310,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (id == R.id.nav_hobby) {
             mToolbar.title = "趣味"
-            mGenre =  1
+            mGenre = 1
         } else if (id == R.id.nav_life) {
             mToolbar.title = "生活"
             mGenre = 2
@@ -300,55 +323,74 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else if (id == R.id.nav_favorite) {
             mToolbar.title = "お気に入り"
 
-//                     mGenre= FirebaseAuth.getInstance().currentUser?.uid?.toInt() ?:
-            mGenre=   5
 
 
-
-
-
-        }
-//        val user = FirebaseAuth.getInstance().currentUser
-//
-//        if (user == null) {
-//
-//            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout2)
-//            drawer.closeDrawer(GravityCompat.START)
-//
-//        }else{
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        drawer.closeDrawer(GravityCompat.START)
-
-
-
-        // --- ここから ---
-        // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
-        mQuestionArrayList.clear()
-        mAdapter.setQuestionArrayList(mQuestionArrayList)
-        mListView.adapter = mAdapter
-
-        // 選択したジャンルにリスナーを登録する
-        if (mGenreRef != null) {
-            mGenreRef!!.removeEventListener(mEventListener)
-
-        }
-        mGenreRef = mDatabaseReference.child(ContentsPATH).child(mGenre.toString())
-        mGenreRef!!.addChildEventListener(mEventListener)
-        // --- ここまで追加する ---
-        if (id == R.id.nav_favorite) {
-            val userRef = FirebaseAuth.getInstance().currentUser
-
-
-            if (mGenreRef2 != null) {
-                mGenreRef2!!.removeEventListener(mEventListener)
-            }
-            mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
-            mGenreRef2!!.addChildEventListener(mEventListener)
+//                     mGenre= FirebaseAuth.getInstance().currentUser?.uid?.toInt()!!
 
 
         }
+            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+
+            drawer.closeDrawer(GravityCompat.START)
 
 
-        return true
+
+
+
+
+
+            // --- ここから ---
+
+            // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
+
+            mQuestionArrayList.clear()
+
+            mAdapter.setQuestionArrayList(mQuestionArrayList)
+
+            mListView.adapter = mAdapter
+
+
+if(id == R.id.nav_hobby || id == R.id.nav_life  || id == R.id.nav_health || id == R.id.nav_compter) {
+    // 選択したジャンルにリスナーを登録する
+    if (mGenreRef != null) {
+
+        mGenreRef!!.removeEventListener(mEventListener)
+
+
     }
+
+    mGenreRef = mDatabaseReference.child(ContentsPATH).child(mGenre.toString())
+
+    mGenreRef!!.addChildEventListener(mEventListener)
+
+
+
+
+}else {
+    val userRef = FirebaseAuth.getInstance().currentUser
+    if (mGenreRef2 != null) {
+
+        mGenreRef2!!.removeEventListener(mEventListener)
+
+    }
+
+    mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
+
+    mGenreRef2!!.addChildEventListener(mEventListener)
+
+    // --- ここまで追加する ---
+
+//            if (id == R.id.nav_favorite) {
+
+
+//            }
+
 }
+
+
+
+            return true
+
+        }
+
+    }

@@ -69,7 +69,11 @@ class LoginActivity : AppCompatActivity() {
                     userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val data = snapshot.value as Map<*, *>?
-                            saveName(data!!["name"] as String)
+try{
+    saveName(data!!["name"] as String)
+}catch(e: Exception){
+
+}
                         }
 
                         override fun onCancelled(firebaseError: DatabaseError) {
@@ -140,31 +144,38 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-        private fun createAccount(email: String,password: String) {
-            progressBar.visibility = View.VISIBLE
+    private fun createAccount(email: String, password: String) {
+        progressBar.visibility = View.VISIBLE
 
 
-            mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(mCreateAccountListener)
-
-        }
-
-
-     private fun login(email:String,password: String) {
-         progressBar.visibility = View.VISIBLE
-
-         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(mLoginListener)
-
-     }
-
-    private fun saveName(name: String) {
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
-        val editor = sp.edit()
-        editor.putString(NameKEY, name)
-        editor.commit()
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(mCreateAccountListener)
 
     }
 
+
+    private fun login(email: String, password: String) {
+        progressBar.visibility = View.VISIBLE
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(mLoginListener)
+
+    }
+
+    private fun saveName(name: String) {
+
+        try {
+            val sp = PreferenceManager.getDefaultSharedPreferences(this)
+            val editor = sp.edit()
+            editor.putString(NameKEY, name)
+            editor.commit()
+        } catch (e: Exception) {
+
+            println(e)
+        }
+
+    }
 }
+
 
 
 
