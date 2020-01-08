@@ -112,7 +112,57 @@ class QuestionDetailActivity: AppCompatActivity() {
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
 
+                val map = p0.value as Map<String, String>
+                val title = map["title"] ?: ""
+                val body = map["body"] ?: ""
+                val name = map["name"] ?: ""
+                val uid = map["uid"] ?: ""
+                val imageString = map["image"] ?: ""
+                val favoriteSwitcher = map["favorite"] ?: ""
+
+                val bytes = if (imageString.isNotEmpty()) {
+                    Base64.decode(imageString, Base64.DEFAULT)
+
+
+                } else {
+                    byteArrayOf()
+                }
+
+                val answerArrayList = ArrayList<Answer>()
+                val answerMap = map["answers"] as Map<String, String>?
+                if (answerMap != null) {
+                    for (key in answerMap.keys) {
+                        val temp = answerMap[key] as Map<String, String>
+                        val answerBody = temp["body"] ?: ""
+                        val answerName = temp["name"] ?: ""
+                        val answerUid = temp["uid"] ?: ""
+                        val answer = Answer(answerBody, answerName, answerUid, key)
+
+                        answerArrayList.add(answer)
+
+                    }
+                }
+
+                val question = Question(
+                    title,
+                    body,
+                    name,
+                    uid,
+                    p0.key ?: "",
+                    mGenre,
+                    bytes,
+                    answerArrayList
+                )
+
+
+                if (favoriteSwitcher == "1") {
+                    button1.setImageResource(R.drawable.favorite1)
+                } else {
+                    button1.setImageResource(R.drawable.favorite2)
+                }
+
             }
+
 
             override fun onChildRemoved(p0: DataSnapshot) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -130,7 +180,7 @@ class QuestionDetailActivity: AppCompatActivity() {
                 val name = map["name"] ?: ""
                 val uid = map["uid"] ?: ""
                 val imageString = map["image"] ?: ""
-//                val favoriteSwitcher = map["favorite"] ?: ""
+                val favoriteSwitcher = map["favorite"] ?: ""
 
                 val bytes = if (imageString.isNotEmpty()) {
                     Base64.decode(imageString, Base64.DEFAULT)
@@ -167,11 +217,9 @@ class QuestionDetailActivity: AppCompatActivity() {
                 )
 
 
-
-
-                }
-
             }
+
+        }
 
 
 
@@ -190,9 +238,9 @@ class QuestionDetailActivity: AppCompatActivity() {
                 .toString()
         ).child(mQuestion.questionUid)
 //
-        val switcher =     genreRef.child("favorite")
+//        val switcher =     genreRef.child("favorite")
 //
-        switcher!!.addChildEventListener(mEventListener)
+        genreRef.addChildEventListener(mEventListener)
 
 
 
@@ -202,7 +250,7 @@ class QuestionDetailActivity: AppCompatActivity() {
         listView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
 
-//         if(mQuestion.favoriteSwitcher == "1") {
+//         if(favoriteSwitcher== "1") {
 //             button1.setImageResource(R.drawable.favorite2)
 //
 //
