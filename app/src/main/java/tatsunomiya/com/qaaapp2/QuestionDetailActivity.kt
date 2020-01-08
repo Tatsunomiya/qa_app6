@@ -112,55 +112,55 @@ class QuestionDetailActivity: AppCompatActivity() {
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
 
-                val map = p0.value as Map<String, String>
-                val title = map["title"] ?: ""
-                val body = map["body"] ?: ""
-                val name = map["name"] ?: ""
-                val uid = map["uid"] ?: ""
-                val imageString = map["image"] ?: ""
-                val favoriteSwitcher = map["favorite"] ?: ""
-
-                val bytes = if (imageString.isNotEmpty()) {
-                    Base64.decode(imageString, Base64.DEFAULT)
-
-
-                } else {
-                    byteArrayOf()
-                }
-
-                val answerArrayList = ArrayList<Answer>()
-                val answerMap = map["answers"] as Map<String, String>?
-                if (answerMap != null) {
-                    for (key in answerMap.keys) {
-                        val temp = answerMap[key] as Map<String, String>
-                        val answerBody = temp["body"] ?: ""
-                        val answerName = temp["name"] ?: ""
-                        val answerUid = temp["uid"] ?: ""
-                        val answer = Answer(answerBody, answerName, answerUid, key)
-
-                        answerArrayList.add(answer)
-
-                    }
-                }
-
-                val question = Question(
-                    title,
-                    body,
-                    name,
-                    uid,
-                    p0.key ?: "",
-                    mGenre,
-                    bytes,
-                    answerArrayList
-                )
-
-
-                if (favoriteSwitcher == "1") {
-                    button1.setImageResource(R.drawable.favorite1)
-                } else {
-                    button1.setImageResource(R.drawable.favorite2)
-                }
-
+//                val map = p0.value as Map<String, String>
+//                val title = map["title"] ?: ""
+//                val body = map["body"] ?: ""
+//                val name = map["name"] ?: ""
+//                val uid = map["uid"] ?: ""
+//                val imageString = map["image"] ?: ""
+//                val favoriteSwitcher = map["favorite"] ?: ""
+//
+//                val bytes = if (imageString.isNotEmpty()) {
+//                    Base64.decode(imageString, Base64.DEFAULT)
+//
+//
+//                } else {
+//                    byteArrayOf()
+//                }
+//
+//                val answerArrayList = ArrayList<Answer>()
+//                val answerMap = map["answers"] as Map<String, String>?
+//                if (answerMap != null) {
+//                    for (key in answerMap.keys) {
+//                        val temp = answerMap[key] as Map<String, String>
+//                        val answerBody = temp["body"] ?: ""
+//                        val answerName = temp["name"] ?: ""
+//                        val answerUid = temp["uid"] ?: ""
+//                        val answer = Answer(answerBody, answerName, answerUid, key)
+//
+//                        answerArrayList.add(answer)
+//
+//                    }
+//                }
+//
+//                val question = Question(
+//                    title,
+//                    body,
+//                    name,
+//                    uid,
+//                    p0.key ?: "",
+//                    mGenre,
+//                    bytes,
+//                    answerArrayList
+//                )
+//
+//
+//                if (favoriteSwitcher == "1") {
+//                    button1.setImageResource(R.drawable.favorite1)
+//                } else {
+//                    button1.setImageResource(R.drawable.favorite2)
+//                }
+//
             }
 
 
@@ -174,49 +174,62 @@ class QuestionDetailActivity: AppCompatActivity() {
 
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
-                val map = dataSnapshot.value as Map<String, String>
-                val title = map["title"] ?: ""
-                val body = map["body"] ?: ""
-                val name = map["name"] ?: ""
-                val uid = map["uid"] ?: ""
-                val imageString = map["image"] ?: ""
-                val favoriteSwitcher = map["favorite"] ?: ""
 
-                val bytes = if (imageString.isNotEmpty()) {
-                    Base64.decode(imageString, Base64.DEFAULT)
+                if(dataSnapshot.key == "favorite") {
 
 
-                } else {
-                    byteArrayOf()
-                }
-
-                val answerArrayList = ArrayList<Answer>()
-                val answerMap = map["answers"] as Map<String, String>?
-                if (answerMap != null) {
-                    for (key in answerMap.keys) {
-                        val temp = answerMap[key] as Map<String, String>
-                        val answerBody = temp["body"] ?: ""
-                        val answerName = temp["name"] ?: ""
-                        val answerUid = temp["uid"] ?: ""
-                        val answer = Answer(answerBody, answerName, answerUid, key)
-
-                        answerArrayList.add(answer)
-
+                    if (dataSnapshot.value == "0") {
+                        button1.setImageResource(R.drawable.favorite1)
+                    } else {
+                        button1.setImageResource(R.drawable.favorite2)
                     }
+
                 }
-
-                val question = Question(
-                    title,
-                    body,
-                    name,
-                    uid,
-                    dataSnapshot.key ?: "",
-                    mGenre,
-                    bytes,
-                    answerArrayList
-                )
-
-
+//                val map = dataSnapshot.value as Map<String, String>
+//                val title = map["title"] ?: ""
+//                val body = map["body"] ?: ""
+//                val name = map["name"] ?: ""
+//                val uid = map["uid"] ?: ""
+//                val imageString = map["image"] ?: ""
+//                val favoriteSwitcher = map["favorite"] ?: ""
+//
+//
+//
+//                val bytes = if (imageString.isNotEmpty()) {
+//                    Base64.decode(imageString, Base64.DEFAULT)
+//
+//
+//                } else {
+//                    byteArrayOf()
+//                }
+//
+//                val answerArrayList = ArrayList<Answer>()
+//                val answerMap = map["answers"] as Map<String, String>?
+//                if (answerMap != null) {
+//                    for (key in answerMap.keys) {
+//                        val temp = answerMap[key] as Map<String, String>
+//                        val answerBody = temp["body"] ?: ""
+//                        val answerName = temp["name"] ?: ""
+//                        val answerUid = temp["uid"] ?: ""
+//                        val answer = Answer(answerBody, answerName, answerUid, key)
+//
+//                        answerArrayList.add(answer)
+//
+//                    }
+//                }
+//
+//                val question = Question(
+//                    title,
+//                    body,
+//                    name,
+//                    uid,
+//                    dataSnapshot.key ?: "",
+//                    mGenre,
+//                    bytes,
+//                    answerArrayList
+//                )
+//
+//
             }
 
         }
