@@ -342,7 +342,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (mGenreRef2 != null) {
                 mGenreRef2!!.removeEventListener(mEventListener)
             }
-            mGenreRef2 = mDatabaseReference.child("users").child(userRef?.uid.toString())
+            mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
             mGenreRef2!!.addChildEventListener(mEventListener)
 
 
