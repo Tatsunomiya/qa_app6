@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_question_detail.*
 class QuestionDetailActivity: AppCompatActivity() {
     var favoriteSwitch: String = "0"
 
-    var switcher: String= ""
+    var switcher: String = ""
 
     private var favoriteGenre: String = "5"
 
@@ -28,81 +28,10 @@ class QuestionDetailActivity: AppCompatActivity() {
     private lateinit var mQuestionArrayList: ArrayList<Question>
 
 
-//    private val mEventListener = object : ChildEventListener {
-//        override fun onCancelled(p0: DatabaseError) {
-//            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        }
-//
-//        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-//            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        }
-//
-//        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-//            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        }
-//
-//        override fun onChildRemoved(p0: DataSnapshot) {
-//            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        }
-//
-//        override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-//            val map = dataSnapshot.value as Map<String, String>
-//            val title = map["title"] ?: ""
-//            val body = map["body"] ?: ""
-//            val name = map["name"] ?: ""
-//            val uid = map["uid"] ?: ""
-//            val imageString = map["image"] ?: ""
-//            val favorite = map["favorite"]?: ""
-//
-//            val bytes = if (imageString.isNotEmpty()) {
-//                Base64.decode(imageString, Base64.DEFAULT)
-//
-//
-//            } else {
-//                byteArrayOf()
-//            }
-//
-//              if(favorite == "0") {
-//                  button1.setImageResource(R.drawable.favorite1)
-//
-//
-//              }else {
-//                  button1.setImageResource(R.drawable.favorite2)
-//
-//              }
-//
-//
-//            val map = dataSnapshot.value as Map<String, String>
-//            val answerUid = dataSnapshot.key ?: ""
-//
-//
-//            for (answer in mQuestion.answers) {
-//                if (answerUid == answer.answerUid) {
-//                    return
-//                }
-//            }
-//
-//            val body = map["body"] ?: ""
-//            val name = map["name"] ?: ""
-//            val uid = map["uid"] ?: ""
-//
-//            val answer = Answer(body, name, uid, answerUid)
-//            mQuestion.answers.add(answer)
-//            mAdapter.notifyDataSetChanged()
-//
-//
-//        }
-//
-//        }
-//
-//    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_detail)
-
 
 
         val mEventListener = object : ChildEventListener {
@@ -186,16 +115,16 @@ class QuestionDetailActivity: AppCompatActivity() {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
 
-                if(dataSnapshot.key == "favorite") {
-
-
-                    if (dataSnapshot.value == "0") {
-                        button1.setImageResource(R.drawable.favorite1)
-                    } else {
-                        button1.setImageResource(R.drawable.favorite2)
-                    }
-
-                }
+//                if(dataSnapshot.key == "favorite") {
+//
+//
+//                    if (dataSnapshot.value == "0") {
+//                        button1.setImageResource(R.drawable.favorite1)
+//                    } else {
+//                        button1.setImageResource(R.drawable.favorite2)
+//                    }
+//
+//                }
 //                val map = dataSnapshot.value as Map<String, String>
 //                val title = map["title"] ?: ""
 //                val body = map["body"] ?: ""
@@ -241,17 +170,15 @@ class QuestionDetailActivity: AppCompatActivity() {
 //                )
 //
 //
+//            }
+//
             }
 
         }
 
 
-
-
-
         val extras = intent.extras
         mQuestion = extras.get("question") as Question
-
 
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -264,8 +191,7 @@ class QuestionDetailActivity: AppCompatActivity() {
 //
 //        val switcher =     genreRef.child("favorite")
 //
-        genreRef.addChildEventListener(mEventListener)
-
+//        genreRef.addChildEventListener(mEventListener)
 
 
         title = mQuestion.title
@@ -346,12 +272,12 @@ class QuestionDetailActivity: AppCompatActivity() {
                     val bitmapString = Base64.encodeToString(mQuestion.imageBytes, Base64.DEFAULT)
                     data["favorite"] = favoriteSwitch
 
-
-                    data2["favorite"] = favoriteSwitch
-                    data2["title"] = mQuestion.title
-                    data2["body"] = mQuestion.body
-                    data2["name"] = mQuestion.name
-                    data2["image"] = bitmapString
+//
+//                    data2["favorite"] = favoriteSwitch
+//                    data2["title"] = mQuestion.title
+//                    data2["body"] = mQuestion.body
+//                    data2["name"] = mQuestion.name
+//                    data2["image"] = bitmapString
                     data2["uid"] = mQuestion.uid
                     genreRef.updateChildren(data)
 //                favoriteRef.updateChildren(data2)
@@ -417,12 +343,18 @@ class QuestionDetailActivity: AppCompatActivity() {
 
                 }
             }
-        }
 
+        }
 
     }
 
 }
+
+
+
+
+
+
 
 
 
