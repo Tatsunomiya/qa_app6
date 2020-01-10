@@ -115,16 +115,16 @@ class QuestionDetailActivity: AppCompatActivity() {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
 
 
-//                if(dataSnapshot.key == "favorite") {
-//
-//
-//                    if (dataSnapshot.value == "0") {
-//                        button1.setImageResource(R.drawable.favorite1)
-//                    } else {
-//                        button1.setImageResource(R.drawable.favorite2)
-//                    }
-//
-//                }
+                if(dataSnapshot.key == "favorite") {
+
+
+                    if (dataSnapshot.value == "0") {
+                        button1.setImageResource(R.drawable.favorite1)
+                    } else {
+                        button1.setImageResource(R.drawable.favorite2)
+                    }
+
+                }
 //                val map = dataSnapshot.value as Map<String, String>
 //                val title = map["title"] ?: ""
 //                val body = map["body"] ?: ""
@@ -189,9 +189,9 @@ class QuestionDetailActivity: AppCompatActivity() {
                 .toString()
         ).child(mQuestion.questionUid)
 //
-//        val switcher =     genreRef.child("favorite")
-//
-//        genreRef.addChildEventListener(mEventListener)
+        val switcher =     genreRef.child("favorite")
+
+        genreRef.addChildEventListener(mEventListener)
 
 
         title = mQuestion.title
@@ -273,12 +273,13 @@ class QuestionDetailActivity: AppCompatActivity() {
                     data["favorite"] = favoriteSwitch
 
 //
-//                    data2["favorite"] = favoriteSwitch
+                    data2["favorite"] = favoriteSwitch
 //                    data2["title"] = mQuestion.title
 //                    data2["body"] = mQuestion.body
 //                    data2["name"] = mQuestion.name
 //                    data2["image"] = bitmapString
                     data2["uid"] = mQuestion.uid
+                    data2["genre"] = mQuestion.genre
                     genreRef.updateChildren(data)
 //                favoriteRef.updateChildren(data2)
 //                favoriteRef.updateChildren(data2)
