@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val favoriteSwitch = map["favorite"] ?: ""
             val genre = map2["genre"] ?: ""
 
+
             title2 = title
             body2 = body
             imageString2 = imageString
