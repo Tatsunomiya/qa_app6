@@ -34,26 +34,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mGenreRef2: DatabaseReference? = null
     private var mContents: DatabaseReference? = null
 
-    private  var title2  =""
+    private var title2 = ""
     private var body2 = ""
     private var name2 = ""
-    private var imageString2 =  ""
-    private var Genre2 = Int
-    private var QuestionID2 =""
+    private var imageString2 = ""
+    private var Genre2: Int = 0
+    private var QuestionID2 = ""
 
     private val mEventListener0 = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             val questionId = dataSnapshot.key.toString()
-
-
-
-
-
-
-
-
-
-
 
 
             val map = dataSnapshot.value as Map<String, String>
@@ -63,7 +53,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
             val favoriteSwitch = map["favorite"] ?: ""
-//            val genre = map["genre"]?: ""
 
             title2 = title
             body2 = body
@@ -114,26 +103,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-            val map = dataSnapshot.value as Map<String, String>
-
-            for (question in mQuestionArrayList) {
-                if (dataSnapshot.key.equals(question.questionUid)) {
-
-                    question.answers.clear()
-                    val answerMap = map["answers"] as Map<String, String>?
-                    if (answerMap != null) {
-                        for (key in answerMap.keys) {
-                            val temp = answerMap[key] as Map<String, String>
-                            val answerBody = temp["body"] ?: ""
-                            val answerName = temp["name"] ?: ""
-                            val answerUid = temp["uid"] ?: ""
-                            val answer = Answer(answerBody, answerName, answerUid, key)
-                            question.answers.add(answer)
-                        }
-                    }
-                    mAdapter.notifyDataSetChanged()
-                }
-            }
+//            val map = dataSnapshot.value as Map<String, String>
+//
+//            for (question in mQuestionArrayList) {
+//                if (dataSnapshot.key.equals(question.questionUid)) {
+//
+//                    question.answers.clear()
+//                    val answerMap = map["answers"] as Map<String, String>?
+//                    if (answerMap != null) {
+//                        for (key in answerMap.keys) {
+//                            val temp = answerMap[key] as Map<String, String>
+//                            val answerBody = temp["body"] ?: ""
+//                            val answerName = temp["name"] ?: ""
+//                            val answerUid = temp["uid"] ?: ""
+//                            val answer = Answer(answerBody, answerName, answerUid, key)
+//                            question.answers.add(answer)
+//                        }
+//                    }
+//                    mAdapter.notifyDataSetChanged()
+//                }
+//            }
         }
 
         override fun onChildRemoved(p0: DataSnapshot) {
@@ -150,21 +139,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-
     private val mEventListener = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             val questionId = dataSnapshot.key.toString()
-
-
-
-
-
-
-
-
-
-
 
 
             val map = dataSnapshot.value as Map<String, String>
@@ -176,14 +153,126 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
             val favoriteSwitch = map["favorite"] ?: ""
-            val genre = map2["genre"]?: Int
+            val genre = map2["genre"] ?: ""
 
             title2 = title
             body2 = body
             imageString2 = imageString
             name2 = name
             QuestionID2 = questionId
-            Genre2 = genre
+            Genre2 = genre.toString().toInt()
+
+
+
+//                answerArrayList
+//            )
+// val bytes = if (imageString.isNotEmpty()) {
+//                Base64.decode(imageString, Base64.DEFAULT)
+//
+//
+//            } else {
+//                byteArrayOf()
+//            }
+//
+//            val answerArrayList = ArrayList<Answer>()
+//            val answerMap = map["answers"] as Map<String, String>?
+//            if (answerMap != null) {
+//                for (key in answerMap.keys) {
+//                    val temp = answerMap[key] as Map<String, String>
+//                    val answerBody = temp["body"] ?: ""
+//                    val answerName = temp["name"] ?: ""
+//                    val answerUid = temp["uid"] ?: ""
+//                    val answer = Answer(answerBody, answerName, answerUid, key)
+//
+//                    answerArrayList.add(answer)
+//
+//                }
+//            }
+//
+//            val question = Question(
+//                title,
+//                body,
+//                name,
+//                uid,
+//                dataSnapshot.key ?: "",
+//                Genre2,
+//                bytes,
+//            mQuestionArrayList.add(question)
+//            mAdapter.notifyDataSetChanged()
+
+
+        }
+
+        override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+//            val map = dataSnapshot.value as Map<String, String>
+//
+//            for (question in mQuestionArrayList) {
+//                if (dataSnapshot.key.equals(question.questionUid)) {
+//
+//                    question.answers.clear()
+//                    val answerMap = map["answers"] as Map<String, String>?
+//                    if (answerMap != null) {
+//                        for (key in answerMap.keys) {
+//                            val temp = answerMap[key] as Map<String, String>
+//                            val answerBody = temp["body"] ?: ""
+//                            val answerName = temp["name"] ?: ""
+//                            val answerUid = temp["uid"] ?: ""
+//                            val answer = Answer(answerBody, answerName, answerUid, key)
+//                            question.answers.add(answer)
+//                        }
+//                    }
+//                    mAdapter.notifyDataSetChanged()
+//                }
+//            }
+        }
+
+        override fun onChildRemoved(p0: DataSnapshot) {
+        }
+
+        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+
+        }
+
+        override fun onCancelled(p0: DatabaseError) {
+
+        }
+
+    }
+
+
+    private val mEventListener2 = object : ChildEventListener {
+        override fun onCancelled(p0: DatabaseError) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+
+
+            val map = p0.value as Map<String, String>
+            val map2 = p0.value as Map<String, Int>
+
+            val title = map["title"] ?: ""
+            val body = map["body"] ?: ""
+            val name = map["name"] ?: ""
+            val uid = map["uid"] ?: ""
+            val imageString = map["image"] ?: ""
+            val favoriteSwitch = map["favorite"] ?: ""
+            val genre = map2["genre"] ?: ""
+
+//            title2 = title
+//            body2 = body
+//            imageString2 = imageString
+//            name2 = name
+//            QuestionID2 = questionId
+//            Genre2 = genre.toString().toInt()
 
 
             val bytes = if (imageString.isNotEmpty()) {
@@ -214,69 +303,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 body,
                 name,
                 uid,
-                dataSnapshot.key ?: "",
+                QuestionID2,
                 Genre2,
                 bytes,
                 answerArrayList
             )
 //
-//            mQuestionArrayList.add(question)
-//            mAdapter.notifyDataSetChanged()
+            mQuestionArrayList.add(question)
+            mAdapter.notifyDataSetChanged()
 
-
-        }
-
-        override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-            val map = dataSnapshot.value as Map<String, String>
-
-            for (question in mQuestionArrayList) {
-                if (dataSnapshot.key.equals(question.questionUid)) {
-
-                    question.answers.clear()
-                    val answerMap = map["answers"] as Map<String, String>?
-                    if (answerMap != null) {
-                        for (key in answerMap.keys) {
-                            val temp = answerMap[key] as Map<String, String>
-                            val answerBody = temp["body"] ?: ""
-                            val answerName = temp["name"] ?: ""
-                            val answerUid = temp["uid"] ?: ""
-                            val answer = Answer(answerBody, answerName, answerUid, key)
-                            question.answers.add(answer)
-                        }
-                    }
-                    mAdapter.notifyDataSetChanged()
-                }
-            }
-        }
-
-        override fun onChildRemoved(p0: DataSnapshot) {
-        }
-
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-
-        }
-
-        override fun onCancelled(p0: DatabaseError) {
-
-        }
-
-    }
-
-
-    private val mEventListener2 = object : ChildEventListener{
-        override fun onCancelled(p0: DatabaseError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onChildAdded(p0: DataSnapshot, p1: String?) {
 
         }
 
@@ -491,78 +526,70 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mToolbar.title = "お気に入り"
 
 
-
 //                     mGenre= FirebaseAuth.getInstance().currentUser?.uid?.toInt()!!
 
 
         }
-            val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
 
-            drawer.closeDrawer(GravityCompat.START)
-
-
+        drawer.closeDrawer(GravityCompat.START)
 
 
+        // --- ここから ---
+
+        // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
+
+        mQuestionArrayList.clear()
+
+        mAdapter.setQuestionArrayList(mQuestionArrayList)
+
+        mListView.adapter = mAdapter
 
 
+        if (id == R.id.nav_hobby || id == R.id.nav_life || id == R.id.nav_health || id == R.id.nav_compter) {
+            // 選択したジャンルにリスナーを登録する
+            if (mGenreRef != null) {
 
-            // --- ここから ---
-
-            // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
-
-            mQuestionArrayList.clear()
-
-            mAdapter.setQuestionArrayList(mQuestionArrayList)
-
-            mListView.adapter = mAdapter
+                mGenreRef!!.removeEventListener(mEventListener)
 
 
-if(id == R.id.nav_hobby || id == R.id.nav_life  || id == R.id.nav_health || id == R.id.nav_compter) {
-    // 選択したジャンルにリスナーを登録する
-    if (mGenreRef != null) {
+            }
 
-        mGenreRef!!.removeEventListener(mEventListener)
+            mGenreRef = mDatabaseReference.child(ContentsPATH).child(mGenre.toString())
 
-
-    }
-
-    mGenreRef = mDatabaseReference.child(ContentsPATH).child(mGenre.toString())
-
-    mGenreRef!!.addChildEventListener(mEventListener0)
+            mGenreRef!!.addChildEventListener(mEventListener0)
 
 
+        } else {
+            val userRef = FirebaseAuth.getInstance().currentUser
+            if (mGenreRef2 != null) {
 
+                mGenreRef2!!.removeEventListener(mEventListener)
 
-}else {
-    val userRef = FirebaseAuth.getInstance().currentUser
-    if (mGenreRef2 != null) {
+            }
 
-        mGenreRef2!!.removeEventListener(mEventListener)
+            mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
 
-    }
+            mGenreRef2!!.addChildEventListener(mEventListener)
 
-    mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
+            mContents = mDatabaseReference.child("contents")
 
-    mGenreRef2!!.addChildEventListener(mEventListener)
+            mContents!!.addChildEventListener(mEventListener2)
+//
 
-    mContents = mDatabaseReference.child("contents")
-
-    mContents!!.addChildEventListener(mEventListener2)
-
-
-    // --- ここまで追加する ---
+            // --- ここまで追加する ---
 
 //            if (id == R.id.nav_favorite) {
 
 
 //            }
 
-}
-
-
-
-            return true
-
         }
 
+
+
+        return true
+
     }
+
+}
