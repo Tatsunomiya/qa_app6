@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
             val map = dataSnapshot.value as Map<String, String>
-            val map2 = dataSnapshot.value as Map<String, Int>
+            val map2 = dataSnapshot.value as Map<String, Any>
 
             val title = map["title"] ?: ""
             val body = map["body"] ?: ""
@@ -257,7 +257,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
 
 
-            val map = p0.value as Map<String, String>
+//            val map = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, String>
+//            val map2 = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, Int>
+                        val map = p0.value as Map<String, String>
             val map2 = p0.value as Map<String, Int>
 
             val title = map["title"] ?: ""
@@ -265,14 +267,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val name = map["name"] ?: ""
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
-            val favoriteSwitch = map["favorite"] ?: ""
-            val genre = map2["genre"] ?: ""
+//            val favoriteSwitch = map["favorite"] ?: ""
+//            val genre = map2["genre"] ?: ""
 
 //            title2 = title
 //            body2 = body
 //            imageString2 = imageString
 //            name2 = name
-//            QuestionID2 = questionId
+////            QuestionID2 = questionId
 //            Genre2 = genre.toString().toInt()
 
 
@@ -573,7 +575,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             mGenreRef2!!.addChildEventListener(mEventListener)
 
-            mContents = mDatabaseReference.child("contents")
+//            mContents = mDatabaseReference.child("contents")
+            mContents = mDatabaseReference.child(ContentsPATH).child(Genre2.toString()).child(QuestionID2)
+
 
             mContents!!.addChildEventListener(mEventListener2)
 //
