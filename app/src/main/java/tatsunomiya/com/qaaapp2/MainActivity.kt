@@ -261,6 +261,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val quesionId3 = p0.key.toString()
 
 
+
+
 //            val map = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, String>
 //            val map2 = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, Int>
                         val map = p0.value as Map<String, String>
@@ -290,13 +292,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             val lst = listOf(QuestionID2)
             val lst2 = listOf(p0.value)
-            var lst3 = mutableListOf<Any?>()
+            var lst3 = mutableListOf<Question?>()
 
 
             for(i in lst){
-                for(i in lst2) {
-                    if(i in lst == i in lst2){
-                         lst3 = mutableListOf<Any?>(i)
+                for(g in lst2) {
+                    if(i in lst == g in lst2){
+                         lst3.add(g as Question?)
 
                         Log.d("debug",  lst3.toString())
 
@@ -340,7 +342,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 answerArrayList
             )
 //
-            mQuestionArrayList.add(question)
+            mAdapter.setQuestionArrayList(lst3)
             mAdapter.notifyDataSetChanged()
 
 
