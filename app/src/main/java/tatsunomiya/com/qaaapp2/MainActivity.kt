@@ -3,6 +3,7 @@ package tatsunomiya.com.qaaapp2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
@@ -153,7 +154,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
             val favoriteSwitch = map["favorite"] ?: ""
-            val genre = map2["genre"] ?: ""
+            val  genre  = map2["genre"] ?:  ""
 
 
             title2 = title
@@ -162,6 +163,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             name2 = name
             QuestionID2 = questionId
             Genre2 = genre.toString().toInt()
+
 
 
 
@@ -256,26 +258,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
 
+            val quesionId3 = p0.key.toString()
+
 
 //            val map = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, String>
 //            val map2 = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, Int>
                         val map = p0.value as Map<String, String>
             val map2 = p0.value as Map<String, Int>
 
+
+
             val title = map["title"] ?: ""
             val body = map["body"] ?: ""
             val name = map["name"] ?: ""
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
-//            val favoriteSwitch = map["favorite"] ?: ""
-//            val genre = map2["genre"] ?: ""
+            val favoriteSwitch = map["favorite"] ?: ""
+            val genre = map2["genre"] ?: ""
 
-//            title2 = title
-//            body2 = body
-//            imageString2 = imageString
-//            name2 = name
-////            QuestionID2 = questionId
+            title2 = title
+            body2 = body
+            imageString2 = imageString
+            name2 = name
+//            QuestionID2
 //            Genre2 = genre.toString().toInt()
+
+//            Log.d("debug", "key = " + p0.key.toString())
+//
+//            Log.d("debug", "value = " + p0.value.toString())
+
+
+            val lst = listOf(QuestionID2)
+            val lst2 = listOf(p0.value)
+            var lst3 = mutableListOf<Any?>()
+
+
+            for(i in lst){
+                for(i in lst2) {
+                    if(i in lst == i in lst2){
+                         lst3 = mutableListOf<Any?>(i)
+
+                        Log.d("debug",  lst3.toString())
+
+                    }
+
+                }
+            }
 
 
             val bytes = if (imageString.isNotEmpty()) {
@@ -572,11 +600,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
+//            mGenreRef2 = mDatabaseReference.child("favorites").child(userRef.toString())
+
 
             mGenreRef2!!.addChildEventListener(mEventListener)
 
 //            mContents = mDatabaseReference.child("contents")
-            mContents = mDatabaseReference.child(ContentsPATH).child(Genre2.toString()).child(QuestionID2)
+            mContents = mDatabaseReference.child("contents")
 
 
             mContents!!.addChildEventListener(mEventListener2)
