@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var QuestionID2 = ""
 
     lateinit var listmap : Map<String,Question>
+    lateinit var listmap2: Map<String,String>
 
     private val mEventListener0 = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -255,7 +256,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
@@ -265,25 +265,65 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 //            val map = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, String>
 //            val map2 = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, Int>
-            val map = p0.value as Map<String, String>
-            val map2 = p0.value as Map<String, Any>
+//            val map = Map<String, String>
+//            val map2 = p0.value as Map<String, Any>
 
 
-            val title = map["title"] ?: ""
-            val body = map["body"] ?: ""
-            val name = map["name"] ?: ""
-            val uid = map["uid"] ?: ""
-            val imageString = map["image"] ?: ""
-            val favoriteSwitch = map["favorite"] ?: ""
+//            val title = map["title"] ?: ""
+//            val body = map["body"] ?: ""
+//            val name = map["name"] ?: ""
+//            val uid = map["uid"] ?: ""
+//            val imageString = map["image"] ?: ""
+//            val favoriteSwitch = map["favorite"] ?: ""
+////            val genre = map2["genre"] ?: ""
+
+//            title2 = title
+//            body2 = body
+//            imageString2 = imageString
+//            name2 = name
+//            QuestionID2
+////            Genre2 = genre.toString().toInt()
+
+
+//            val bytes = if (imageString.isNotEmpty()) {
+//                Base64.decode(imageString, Base64.DEFAULT)
+//
+//
+//            } else {
+//                byteArrayOf()
+//            }
+
+
+//            val answerArrayList = ArrayList<Answer>()
+//            val answerMap = map["answers"] as Map<String, String>?
+//            if (answerMap != null) {
+//                for (key in answerMap.keys) {
+//                    val temp = answerMap[key] as Map<String, String>
+//                    val answerBody = temp["body"] ?: ""
+//                    val answerName = temp["name"] ?: ""
+//                    val answerUid = temp["uid"] ?: ""
+//                    val answer = Answer(answerBody, answerName, answerUid, key)
+//
+//                    answerArrayList.add(answer)
+//
+//                }
+//            }
+
+
+//            Log.d("debug", "key = " + p0.key.toString())
+//
+//            Log.d("debug", "value = " + p0.value.toString())
+            listmap = p0.value as Map<String, Question>
+            listmap2 = p0.value as Map<String, String>
+
+
+            val title = listmap["title"].toString()
+            val body = listmap["body"].toString()
+            val name = listmap["name"].toString()
+            val uid = listmap["uid"].toString()
+            val imageString = listmap2["image"].toString()
+            val favoriteSwitch = listmap["favorite"].toString()
 //            val genre = map2["genre"] ?: ""
-
-            title2 = title
-            body2 = body
-            imageString2 = imageString
-            name2 = name
-            QuestionID2
-//            Genre2 = genre.toString().toInt()
-
 
             val bytes = if (imageString.isNotEmpty()) {
                 Base64.decode(imageString, Base64.DEFAULT)
@@ -293,9 +333,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 byteArrayOf()
             }
 
-
             val answerArrayList = ArrayList<Answer>()
-            val answerMap = map["answers"] as Map<String, String>?
+            val answerMap = listmap["answers"] as Map<String, String>?
             if (answerMap != null) {
                 for (key in answerMap.keys) {
                     val temp = answerMap[key] as Map<String, String>
@@ -306,49 +345,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     answerArrayList.add(answer)
 
-                }
-            }
 
-
-//            Log.d("debug", "key = " + p0.key.toString())
-//
-//            Log.d("debug", "value = " + p0.value.toString())
-            listmap = p0.value as Map<String, Question>
-
-            //            val title = map["title"] ?: ""
-
-
-            val lst = listOf(QuestionID2)
+                    val lst = listOf(QuestionID2)
 //            val lst2 = listOf(p0.value)
 //            val lst2 = map[p0.value]
 
-            var lst3 = ArrayList<Question>()
+                    var lst3 = ArrayList<Question>()
 
-            for (i in lst) {
-                for (g in listmap) {
+                    for (i in lst) {
+                        for (g in listmap) {
 
 //                    if (i == listmap[]) {
 
-                    val favorite: Question? = listmap[i]
-                    if (favorite != null) {
+                            val favorite: Question? = listmap[i]
+                            if (favorite != null) {
 
 
-                        val q = Question(
-                            title,
-                            body,
-                            name,
-                            uid,
-                            i,
-                            Genre2,
-                            bytes,
-                            answerArrayList
+                                val q = Question(
+                                    title,
+                                    body,
+                                    name,
+                                    uid,
+                                    quesionId3,
+                                    Genre2,
+                                    bytes,
+                                    answerArrayList
 
 
-                        )
+                                )
 
 
-                        lst3.add(q)
-                        Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
+                                lst3.add(q)
+                                Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
 
 //                    lst3.add(g as Question)
 //                    Log.d("debug", lst3.toString())
@@ -356,25 +384,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 
 
-                    } else {
-                        byteArrayOf()
-                    }
-
-                    val answerArrayList = ArrayList<Answer>()
-                    val answerMap = map["answers"] as Map<String, String>?
-                    if (answerMap != null) {
-                        for (key in answerMap.keys) {
-                            val temp = answerMap[key] as Map<String, String>
-                            val answerBody = temp["body"] ?: ""
-                            val answerName = temp["name"] ?: ""
-                            val answerUid = temp["uid"] ?: ""
-                            val answer = Answer(answerBody, answerName, answerUid, key)
-
-                            answerArrayList.add(answer)
-
-                        }
-                    }
-
+//
 //            val question = Question(
 //                title,
 //                body,
@@ -386,9 +396,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                answerArrayList
 //            )
 //
-                    mAdapter.setQuestionArrayList(lst3)
-                    mAdapter.notifyDataSetChanged()
+                                mAdapter.setQuestionArrayList(lst3)
+                                mAdapter.notifyDataSetChanged()
 
+
+                            }
+
+                        }
+
+                    }
 
                 }
 
@@ -396,14 +412,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
 
-                override fun onChildRemoved(p0: DataSnapshot) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+
+
+
+                    override fun onChildRemoved(p0: DataSnapshot) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
                 }
-
-            }
-
-
-
 
 
 
