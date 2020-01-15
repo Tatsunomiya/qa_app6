@@ -313,70 +313,69 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //            Log.d("debug", "key = " + p0.key.toString())
 //
 //            Log.d("debug", "value = " + p0.value.toString())
-            listmap = p0.value as Map<String, Question>
-            listmap2 = p0.value as Map<String, String>
 
 
-            val title = listmap["title"].toString()
-            val body = listmap["body"].toString()
-            val name = listmap["name"].toString()
-            val uid = listmap["uid"].toString()
-            val imageString = listmap2["image"].toString()
-            val favoriteSwitch = listmap["favorite"].toString()
-//            val genre = map2["genre"] ?: ""
-
-            val bytes = if (imageString.isNotEmpty()) {
-                Base64.decode(imageString, Base64.DEFAULT)
 
 
-            } else {
-                byteArrayOf()
-            }
-
-            val answerArrayList = ArrayList<Answer>()
-            val answerMap = listmap["answers"] as Map<String, String>?
-            if (answerMap != null) {
-                for (key in answerMap.keys) {
-                    val temp = answerMap[key] as Map<String, String>
-                    val answerBody = temp["body"] ?: ""
-                    val answerName = temp["name"] ?: ""
-                    val answerUid = temp["uid"] ?: ""
-                    val answer = Answer(answerBody, answerName, answerUid, key)
-
-                    answerArrayList.add(answer)
 
 
-                    val lst = listOf(QuestionID2)
+//            val answerArrayList = ArrayList<Answer>()
+//            val answerMap = listmap["answers"] as Map<String, String>?
+//            if (answerMap != null) {
+//                for (key in answerMap.keys) {
+//                    val temp = answerMap[key] as Map<String, String>
+//                    val answerBody = temp["body"] ?: ""
+//                    val answerName = temp["name"] ?: ""
+//                    val answerUid = temp["uid"] ?: ""
+//                    val answer = Answer(answerBody, answerName, answerUid, key)
+//
+//                    answerArrayList.add(answer)
+
+            listmap = p0.value as Map<String,Question>
+
+
+
+            val lst = listOf(QuestionID2)
 //            val lst2 = listOf(p0.value)
 //            val lst2 = map[p0.value]
 
-                    var lst3 = ArrayList<Question>()
+            var lst3 = ArrayList<Question>()
 
-                    for (i in lst) {
-                        for (g in listmap) {
-
-//                    if (i == listmap[]) {
-
-                            val favorite: Question? = listmap[i]
-                            if (favorite != null) {
+            for (i in lst) {
+                for (g in listmap) {
 
 
-                                val q = Question(
-                                    title,
-                                    body,
-                                    name,
-                                    uid,
-                                    quesionId3,
-                                    Genre2,
-                                    bytes,
-                                    answerArrayList
 
 
-                                )
 
 
-                                lst3.add(q)
-                                Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
+                    val favorite :Map? = listmap[i]
+
+                    var title = listmap[i]["title"]
+
+
+                    if (favorite != null) {
+
+
+
+
+
+//                        val q = Question(
+//                            title,
+//                            body,
+//                            name,
+//                            uid,
+//                            quesionId3,
+//                            Genre2,
+//                            bytes,
+//                            answerArrayList
+//
+//
+//                        )
+
+
+//                        lst3.add(q)
+                        Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
 
 //                    lst3.add(g as Question)
 //                    Log.d("debug", lst3.toString())
@@ -396,13 +395,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                answerArrayList
 //            )
 //
-                                mAdapter.setQuestionArrayList(lst3)
-                                mAdapter.notifyDataSetChanged()
+                        mAdapter.setQuestionArrayList(lst3)
+                        mAdapter.notifyDataSetChanged()
 
-
-                            }
-
-                        }
 
                     }
 
@@ -413,14 +408,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
+        override fun onChildRemoved(p0: DataSnapshot) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
-
-
-                    override fun onChildRemoved(p0: DataSnapshot) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                }
+    }
 
 
 
