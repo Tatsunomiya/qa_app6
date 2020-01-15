@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var Genre2: Int = 0
     private var QuestionID2 = ""
 
+    lateinit var listmap : Map<String,Question>
+
     private val mEventListener0 = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             val questionId = dataSnapshot.key.toString()
@@ -55,11 +57,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val imageString = map["image"] ?: ""
             val favoriteSwitch = map["favorite"] ?: ""
 
-            title2 = title
-            body2 = body
-            imageString2 = imageString
-            name2 = name
-            QuestionID2 = questionId
+//            title2 = title
+//            body2 = body
+//            imageString2 = imageString
+//            name2 = name
+//            QuestionID2 = questionId
 //            Genre2 = genre
 
 
@@ -261,13 +263,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val quesionId3 = p0.key.toString()
 
 
-
-
 //            val map = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, String>
 //            val map2 = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, Int>
-                        val map = p0.value as Map<String, String>
-            val map2 = p0.value as Map<String, Int>
-
+            val map = p0.value as Map<String, String>
+            val map2 = p0.value as Map<String, Any>
 
 
             val title = map["title"] ?: ""
@@ -276,36 +275,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val uid = map["uid"] ?: ""
             val imageString = map["image"] ?: ""
             val favoriteSwitch = map["favorite"] ?: ""
-            val genre = map2["genre"] ?: ""
+//            val genre = map2["genre"] ?: ""
 
             title2 = title
             body2 = body
             imageString2 = imageString
             name2 = name
-//            QuestionID2
+            QuestionID2
 //            Genre2 = genre.toString().toInt()
-
-//            Log.d("debug", "key = " + p0.key.toString())
-//
-//            Log.d("debug", "value = " + p0.value.toString())
-
-
-            val lst = listOf(QuestionID2)
-            val lst2 = listOf(p0.value)
-            var lst3 = mutableListOf<Question?>()
-
-
-            for(i in lst){
-                for(g in lst2) {
-                    if(i in lst == g in lst2){
-                         lst3.add(g as Question?)
-
-                        Log.d("debug",  lst3.toString())
-
-                    }
-
-                }
-            }
 
 
             val bytes = if (imageString.isNotEmpty()) {
@@ -315,6 +292,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             } else {
                 byteArrayOf()
             }
+
 
             val answerArrayList = ArrayList<Answer>()
             val answerMap = map["answers"] as Map<String, String>?
@@ -331,29 +309,102 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
 
-            val question = Question(
-                title,
-                body,
-                name,
-                uid,
-                QuestionID2,
-                Genre2,
-                bytes,
-                answerArrayList
-            )
+
+//            Log.d("debug", "key = " + p0.key.toString())
 //
-            mAdapter.setQuestionArrayList(lst3)
-            mAdapter.notifyDataSetChanged()
+//            Log.d("debug", "value = " + p0.value.toString())
+            listmap = p0.value as Map<String, Question>
 
+            //            val title = map["title"] ?: ""
+
+
+            val lst = listOf(QuestionID2)
+//            val lst2 = listOf(p0.value)
+//            val lst2 = map[p0.value]
+
+            var lst3 = ArrayList<Question>()
+
+            for (i in lst) {
+                for (g in listmap) {
+
+//                    if (i == listmap[]) {
+
+                    val favorite: Question? = listmap[i]
+                    if (favorite != null) {
+
+
+                        val q = Question(
+                            title,
+                            body,
+                            name,
+                            uid,
+                            i,
+                            Genre2,
+                            bytes,
+                            answerArrayList
+
+
+                        )
+
+
+                        lst3.add(q)
+                        Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
+
+//                    lst3.add(g as Question)
+//                    Log.d("debug", lst3.toString())
+//
+//
+
+
+                    } else {
+                        byteArrayOf()
+                    }
+
+                    val answerArrayList = ArrayList<Answer>()
+                    val answerMap = map["answers"] as Map<String, String>?
+                    if (answerMap != null) {
+                        for (key in answerMap.keys) {
+                            val temp = answerMap[key] as Map<String, String>
+                            val answerBody = temp["body"] ?: ""
+                            val answerName = temp["name"] ?: ""
+                            val answerUid = temp["uid"] ?: ""
+                            val answer = Answer(answerBody, answerName, answerUid, key)
+
+                            answerArrayList.add(answer)
+
+                        }
+                    }
+
+//            val question = Question(
+//                title,
+//                body,
+//                name,
+//                uid,
+//                QuestionID2,
+//                Genre2,
+//                bytes,
+//                answerArrayList
+//            )
+//
+                    mAdapter.setQuestionArrayList(lst3)
+                    mAdapter.notifyDataSetChanged()
+
+
+                }
+
+            }
 
         }
 
-        override fun onChildRemoved(p0: DataSnapshot) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+                override fun onChildRemoved(p0: DataSnapshot) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+            }
 
 
-    }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
