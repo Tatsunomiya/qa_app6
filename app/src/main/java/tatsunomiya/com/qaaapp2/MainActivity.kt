@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var Genre2: Int = 0
     private var QuestionID2 = ""
 
-    lateinit var listmap : Map<String,Question>
+    lateinit var listmap : Map<String,Map<String,String>>
     lateinit var listmap2: Map<String,String>
 
     private val mEventListener0 = object : ChildEventListener {
@@ -331,7 +331,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 //                    answerArrayList.add(answer)
 
-            listmap = p0.value as Map<String,Question>
+            listmap = p0.value as Map<String,Map<String,String>>
 
 
 
@@ -349,40 +349,69 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-                    val favorite :Map? = listmap[i]
+                    val favorite :Map<String,Map<String,String>> = listmap[i] as Map<String,Map<String,String>>
 
-                    var title = listmap[i]["title"]
 
 
                     if (favorite != null) {
 
 
+                        var title = listmap[i]!!["title"].toString()
+                        var body = listmap[i]!!["body"].toString()
+
+                        var name = listmap[i]!!["name"].toString()
+
+                        var uid = listmap[i]!!["uid"].toString()
+
+                        var question = listmap[i].toString()
+                        var  imageString= listmap[i]!!["image"]
 
 
-
-//                        val q = Question(
-//                            title,
-//                            body,
-//                            name,
-//                            uid,
-//                            quesionId3,
-//                            Genre2,
-//                            bytes,
-//                            answerArrayList
-//
-//
-//                        )
+                        val bytes = if (imageString!!.isNotEmpty()) {
+                            Base64.decode(imageString, Base64.DEFAULT)
 
 
-//                        lst3.add(q)
-                        Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
+                        } else {
+                            byteArrayOf()
+                        }
+
+
+                                    val answerArrayList = ArrayList<Answer>()
+            val answerMap = listmap["answers"] as Map<String, String>?
+            if (answerMap != null) {
+                for (key in answerMap.keys) {
+                    val temp = answerMap[key] as Map<String, String>
+                    val answerBody = temp["body"] ?: ""
+                    val answerName = temp["name"] ?: ""
+                    val answerUid = temp["uid"] ?: ""
+                    val answer = Answer(answerBody, answerName, answerUid, key)
+
+                    answerArrayList.add(answer)
+
+
+                    val q = Question(
+                        title,
+                        body,
+                        name,
+                        uid,
+                        question,
+                        Genre2,
+                        bytes,
+                        answerArrayList
+
+
+                    )
+
+
+                    lst3.add(q)
+                    Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
 
 //                    lst3.add(g as Question)
 //                    Log.d("debug", lst3.toString())
 //
-//
-
-
+//}
+                }
+            }
 //
 //            val question = Question(
 //                title,
