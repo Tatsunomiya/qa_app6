@@ -3,7 +3,6 @@ package tatsunomiya.com.qaaapp2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var name2 = ""
     private var imageString2 = ""
     private var Genre2: Int = 0
-    private var QuestionID2 = ""
+     private   var QuestionID2 = listOf("")
 
     lateinit var listmap : Map<String,Map<String,String>>
     lateinit var listmap2: Map<String,String>
@@ -148,6 +147,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val questionId = dataSnapshot.key.toString()
 
 
+
             val map = dataSnapshot.value as Map<String, String>
             val map2 = dataSnapshot.value as Map<String, Any>
 
@@ -164,8 +164,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             body2 = body
             imageString2 = imageString
             name2 = name
-            QuestionID2 = questionId
+            QuestionID2 =  listOf(questionId)
+
             Genre2 = genre.toString().toInt()
+
+
 
 
 
@@ -335,7 +338,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-            val lst = listOf(QuestionID2)
+            val lst = (QuestionID2)
 //            val lst2 = listOf(p0.value)
 //            val lst2 = map[p0.value]
 
@@ -349,14 +352,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-                    val favorite :Map<String,Map<String,String>> = listmap[i] as Map<String,Map<String,String>>
-
+//                    val favorite :Map<String,Map<String,String>> = listmap[i] as Map<String,Map<String,String>>
+                    val favorite :Map<String,Map<String,String>>? = listmap[i] as Map<String,Map<String,String>>?
 
 
                     if (favorite != null) {
 
 
                         var title = listmap[i]!!["title"].toString()
+
+
                         var body = listmap[i]!!["body"].toString()
 
                         var name = listmap[i]!!["name"].toString()
@@ -377,16 +382,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
                                     val answerArrayList = ArrayList<Answer>()
-            val answerMap = listmap["answers"] as Map<String, String>?
-            if (answerMap != null) {
-                for (key in answerMap.keys) {
-                    val temp = answerMap[key] as Map<String, String>
-                    val answerBody = temp["body"] ?: ""
-                    val answerName = temp["name"] ?: ""
-                    val answerUid = temp["uid"] ?: ""
-                    val answer = Answer(answerBody, answerName, answerUid, key)
-
-                    answerArrayList.add(answer)
+//            val answerMap = map["answers"] as Map<String, String>?
+//            if (answerMap != null) {
+//                for (key in answerMap.keys) {
+//                    val temp = answerMap[key] as Map<String, String>
+//                    val answerBody = temp["body"] ?: ""
+//                    val answerName = temp["name"] ?: ""
+//                    val answerUid = temp["uid"] ?: ""
+//                    val answer = Answer(answerBody, answerName, answerUid, key)
+//
+//                    answerArrayList.add(answer)
 
 
                     val q = Question(
@@ -404,7 +409,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
                     lst3.add(q)
-                    Log.d("debug", favorite.toString() + "が lst3 に追加されました！")
 
 //                    lst3.add(g as Question)
 //                    Log.d("debug", lst3.toString())
@@ -413,28 +417,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
 //
-//            val question = Question(
-//                title,
-//                body,
-//                name,
-//                uid,
-//                QuestionID2,
-//                Genre2,
-//                bytes,
-//                answerArrayList
-//            )
+
 //
-                        mAdapter.setQuestionArrayList(lst3)
-                        mAdapter.notifyDataSetChanged()
+
 
 
                     }
+            mAdapter.setQuestionArrayList(lst3)
+            mAdapter.notifyDataSetChanged()
 
-                }
-
-            }
 
         }
+
+
+
+
 
 
         override fun onChildRemoved(p0: DataSnapshot) {
