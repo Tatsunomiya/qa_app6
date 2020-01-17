@@ -3,6 +3,7 @@ package tatsunomiya.com.qaaapp2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
@@ -39,11 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var name2 = ""
     private var imageString2 = ""
     private var Genre2: Int = 0
-     private   var QuestionID2 = listOf("")
+     private   var QuestionID2 = ArrayList<String>()
 
     lateinit var listmap : Map<String,Map<String,String>>
     lateinit var listmap2: Map<String,String>
-    private lateinit var lst3: ArrayList<Question>
+     lateinit var lst3: ArrayList<Question>
 
 
     private val mEventListener0 = object : ChildEventListener {
@@ -148,6 +149,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             val questionId = dataSnapshot.key.toString()
 
+            Log.d("tag",questionId)
+
 
 
             val map = dataSnapshot.value as Map<String, String>
@@ -166,7 +169,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //            body2 = body
 //            imageString2 = imageString
 //            name2 = name
-            QuestionID2 =  listOf(questionId)
+
+                QuestionID2.add(questionId)
+
+
+
 
             Genre2 = genre.toString().toInt()
 
@@ -294,6 +301,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val lst = (QuestionID2)
 //            val lst2 = listOf(p0.value)
 //            val lst2 = map[p0.value]
+            lst3 = ArrayList<Question>()
 
             for (i in lst) {
 //                for (g in listmap) {
@@ -305,6 +313,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
                 if (favorite != null) {
+
 
 
                     var title = listmap[i]!!["title"]
@@ -356,7 +365,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                         uid!!,
 
-                        question!![i].toString(),
+                        QuestionID2.toString(),
 
                         Genre2,
 
@@ -368,7 +377,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     )
 
 
-                     lst3.add(q)
+
+
+                    lst3.add(q)
 
 
 //}
@@ -389,6 +400,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             mQuestionArrayList.addAll(lst3)
 
+
+
             mAdapter.notifyDataSetChanged()
 
 
@@ -405,6 +418,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     }
+
 
 
 
@@ -529,7 +543,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mListView = findViewById(R.id.listView)
         mAdapter = QuestionsListAdapter(this)
         mQuestionArrayList = ArrayList<Question>()
-        lst3 = ArrayList<Question>()
 
 
 
@@ -631,7 +644,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
 
         mQuestionArrayList.clear()
-        lst3.clear()
 
 
         mAdapter.setQuestionArrayList(mQuestionArrayList)
@@ -654,10 +666,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         } else {
+
             val userRef = FirebaseAuth.getInstance().currentUser
             if (mGenreRef2 != null) {
 
                 mGenreRef2!!.removeEventListener(mEventListener)
+
 
             }
 
@@ -666,6 +680,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
             mGenreRef2!!.addChildEventListener(mEventListener)
+
+
 
 //            mContents = mDatabaseReference.child("contents")
             mContents = mDatabaseReference.child("contents")
