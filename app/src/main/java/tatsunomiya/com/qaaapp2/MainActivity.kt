@@ -43,6 +43,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     lateinit var listmap : Map<String,Map<String,String>>
     lateinit var listmap2: Map<String,String>
+    private lateinit var lst3: ArrayList<Question>
+
+
 
     private val mEventListener0 = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -318,10 +321,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //            Log.d("debug", "value = " + p0.value.toString())
 
 
-
-
-
-
 //            val answerArrayList = ArrayList<Answer>()
 //            val answerMap = listmap["answers"] as Map<String, String>?
 //            if (answerMap != null) {
@@ -334,54 +333,54 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 //                    answerArrayList.add(answer)
 
-            listmap = p0.value as Map<String,Map<String,String>>
-
+            listmap = p0.value as Map<String, Map<String, String>>
 
 
             val lst = (QuestionID2)
 //            val lst2 = listOf(p0.value)
 //            val lst2 = map[p0.value]
 
-            var lst3 = ArrayList<Question>()
+            lst3 = ArrayList<Question>()
 
             for (i in lst) {
-                for (g in listmap) {
+//                for (g in listmap) {
+
+
+                val favorite: Map<String, Map<String, String>>? =
+                    listmap[i] as Map<String, Map<String, String>>?
 
 
 
+                if (favorite != null) {
 
 
-
-//                    val favorite :Map<String,Map<String,String>> = listmap[i] as Map<String,Map<String,String>>
-                    val favorite :Map<String,Map<String,String>>? = listmap[i] as Map<String,Map<String,String>>?
+                    var title = listmap[i]!!["title"]
 
 
-                    if (favorite != null) {
+                    var body = listmap[i]!!["body"]
 
 
-                        var title = listmap[i]!!["title"].toString()
+                    var name = listmap[i]!!["name"]
 
 
-                        var body = listmap[i]!!["body"].toString()
-
-                        var name = listmap[i]!!["name"].toString()
-
-                        var uid = listmap[i]!!["uid"].toString()
-
-                        var question = listmap[i].toString()
-                        var  imageString= listmap[i]!!["image"]
+                    var uid = listmap[i]!!["uid"]
 
 
-                        val bytes = if (imageString!!.isNotEmpty()) {
-                            Base64.decode(imageString, Base64.DEFAULT)
+                    var question = listmap[i]
+
+                    var imageString = listmap[i]!!["image"]
 
 
-                        } else {
-                            byteArrayOf()
-                        }
+                    val bytes = if (imageString!!.isNotEmpty()) {
+                        Base64.decode(imageString, Base64.DEFAULT)
 
 
-                                    val answerArrayList = ArrayList<Answer>()
+                    } else {
+                        byteArrayOf()
+                    }
+
+
+                    val answerArrayList = ArrayList<Answer>()
 //            val answerMap = map["answers"] as Map<String, String>?
 //            if (answerMap != null) {
 //                for (key in answerMap.keys) {
@@ -394,14 +393,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                    answerArrayList.add(answer)
 
 
-                    val q = Question(
-                        title,
-                        body,
-                        name,
-                        uid,
-                        question,
+                    var q = Question(
+
+                        title!!,
+
+                        body!!,
+
+                        name!!,
+
+                        uid!!,
+
+                        question!![i].toString(),
+
                         Genre2,
+
                         bytes,
+
                         answerArrayList
 
 
@@ -410,21 +417,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     lst3.add(q)
 
-//                    lst3.add(g as Question)
-//                    Log.d("debug", lst3.toString())
-//
+
 //}
                 }
+
+
+//
+
+//
             }
-//
-
-//
 
 
 
-                    }
-            mAdapter.setQuestionArrayList(lst3)
+
+//            mAdapter.setQuestionArrayList(lst3)
+////            mAdapter.notifyDataSetChanged()
+//            mAdapter.notifyDataSetInvalidated()
+
+            mQuestionArrayList.addAll(lst3)
             mAdapter.notifyDataSetChanged()
+
 
 
         }
