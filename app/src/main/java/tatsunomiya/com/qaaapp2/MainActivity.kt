@@ -431,8 +431,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val user = FirebaseAuth.getInstance().currentUser
 
 
-
-
         if (user == null) {
             val navigationDrawer: NavigationView = findViewById(R.id.nav_view);
             val tmpm: Menu = navigationDrawer.getMenu()
@@ -539,6 +537,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Firebase
         mDatabaseReference = FirebaseDatabase.getInstance().reference
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // ListViewの準備
         mListView = findViewById(R.id.listView)
         mAdapter = QuestionsListAdapter(this)
@@ -562,12 +574,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             intent.putExtra("question", mQuestionArrayList[position])
             startActivity(intent)
         }
-
-
-
-
-
-
 
     }
     override fun onResume() {
@@ -714,7 +720,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
 
-            mContents!!.addChildEventListener(mEventListener2)
+            mContents!!.addChildEventListener (mEventListener2)
 
 
 
