@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var lst3: ArrayList<Question>
 
 
-
     private val mEventListener0 = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
             val questionId = dataSnapshot.key.toString()
@@ -154,19 +153,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val map = dataSnapshot.value as Map<String, String>
             val map2 = dataSnapshot.value as Map<String, Any>
 
-            val title = map["title"] ?: ""
-            val body = map["body"] ?: ""
-            val name = map["name"] ?: ""
-            val uid = map["uid"] ?: ""
-            val imageString = map["image"] ?: ""
-            val favoriteSwitch = map["favorite"] ?: ""
-            val  genre  = map2["genre"] ?:  ""
+//            val title = map["title"] ?: ""
+//            val body = map["body"] ?: ""
+//            val name = map["name"] ?: ""
+//            val uid = map["uid"] ?: ""
+//            val imageString = map["image"] ?: ""
+//            val favoriteSwitch = map["favorite"] ?: ""
+            val  genre  = map2["genre"]
 
 
-            title2 = title
-            body2 = body
-            imageString2 = imageString
-            name2 = name
+//            title2 = title
+//            body2 = body
+//            imageString2 = imageString
+//            name2 = name
             QuestionID2 =  listOf(questionId)
 
             Genre2 = genre.toString().toInt()
@@ -269,51 +268,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val quesionId3 = p0.key.toString()
 
 
-//            val map = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, String>
-//            val map2 = p0.child(Genre2.toString()).child(QuestionID2).value as Map<String, Int>
-//            val map = Map<String, String>
-//            val map2 = p0.value as Map<String, Any>
 
-
-//            val title = map["title"] ?: ""
-//            val body = map["body"] ?: ""
-//            val name = map["name"] ?: ""
-//            val uid = map["uid"] ?: ""
-//            val imageString = map["image"] ?: ""
-//            val favoriteSwitch = map["favorite"] ?: ""
-////            val genre = map2["genre"] ?: ""
-
-//            title2 = title
-//            body2 = body
-//            imageString2 = imageString
-//            name2 = name
-//            QuestionID2
-////            Genre2 = genre.toString().toInt()
-
-
-//            val bytes = if (imageString.isNotEmpty()) {
-//                Base64.decode(imageString, Base64.DEFAULT)
-//
-//
-//            } else {
-//                byteArrayOf()
-//            }
-
-
-//            val answerArrayList = ArrayList<Answer>()
-//            val answerMap = map["answers"] as Map<String, String>?
-//            if (answerMap != null) {
-//                for (key in answerMap.keys) {
-//                    val temp = answerMap[key] as Map<String, String>
-//                    val answerBody = temp["body"] ?: ""
-//                    val answerName = temp["name"] ?: ""
-//                    val answerUid = temp["uid"] ?: ""
-//                    val answer = Answer(answerBody, answerName, answerUid, key)
-//
-//                    answerArrayList.add(answer)
-//
-//                }
-//            }
 
 
 //            Log.d("debug", "key = " + p0.key.toString())
@@ -339,8 +294,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val lst = (QuestionID2)
 //            val lst2 = listOf(p0.value)
 //            val lst2 = map[p0.value]
-
-            lst3 = ArrayList<Question>()
 
             for (i in lst) {
 //                for (g in listmap) {
@@ -415,7 +368,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     )
 
 
-                    lst3.add(q)
+                     lst3.add(q)
 
 
 //}
@@ -435,6 +388,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //            mAdapter.notifyDataSetInvalidated()
 
             mQuestionArrayList.addAll(lst3)
+
             mAdapter.notifyDataSetChanged()
 
 
@@ -461,6 +415,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(mToolbar)
 
         val user = FirebaseAuth.getInstance().currentUser
+
+
 
 
         if (user == null) {
@@ -573,6 +529,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mListView = findViewById(R.id.listView)
         mAdapter = QuestionsListAdapter(this)
         mQuestionArrayList = ArrayList<Question>()
+        lst3 = ArrayList<Question>()
+
+
+
         mAdapter.notifyDataSetChanged()
 
         mListView.setOnItemClickListener { parent, view, position, id ->
@@ -671,6 +631,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // 質問のリストをクリアしてから再度Adapterにセットし、AdapterをListViewにセットし直す
 
         mQuestionArrayList.clear()
+        lst3.clear()
+
 
         mAdapter.setQuestionArrayList(mQuestionArrayList)
 
@@ -710,6 +672,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
             mContents!!.addChildEventListener(mEventListener2)
+
+
 //
 
             // --- ここまで追加する ---
