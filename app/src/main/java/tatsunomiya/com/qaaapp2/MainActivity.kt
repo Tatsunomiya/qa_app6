@@ -169,13 +169,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //            body2 = body
 //            imageString2 = imageString
 //            name2 = name
-
                 QuestionID2.add(questionId)
 
 
 
 
             Genre2 = genre.toString().toInt()
+
 
 
 
@@ -401,8 +401,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mQuestionArrayList.addAll(lst3)
 
 
-
             mAdapter.notifyDataSetChanged()
+
 
 
 
@@ -563,8 +563,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
-    }
 
+
+
+
+
+
+    }
     override fun onResume() {
         super.onResume()
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
@@ -667,44 +672,86 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         } else {
 
+
+
             val userRef = FirebaseAuth.getInstance().currentUser
+
             if (mGenreRef2 != null) {
+
+
 
                 mGenreRef2!!.removeEventListener(mEventListener)
 
 
+
+
+
             }
 
+
+
             mGenreRef2 = mDatabaseReference.child("favorites").child(userRef?.uid.toString())
+
 //            mGenreRef2 = mDatabaseReference.child("favorites").child(userRef.toString())
+
+
+
 
 
             mGenreRef2!!.addChildEventListener(mEventListener)
 
 
 
+
+
+
+
 //            mContents = mDatabaseReference.child("contents")
+
             mContents = mDatabaseReference.child("contents")
+
+
+
 
 
             mContents!!.addChildEventListener(mEventListener2)
 
 
+
+
+
 //
 
+
+
             // --- ここまで追加する ---
+
+
 
 //            if (id == R.id.nav_favorite) {
 
 
+
+
+
 //            }
+
+
 
         }
 
 
 
+
+
+
+
         return true
 
+
+
     }
+
+
 
 }
